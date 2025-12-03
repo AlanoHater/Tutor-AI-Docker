@@ -49,7 +49,7 @@ NODE_ENV=production
 DB_PATH=/app/database/tutor.db
 
 # API Key de Google Gemini (para generar preguntas)
-GEMINI_API_KEY=AIzaSyCMa3ayOUdQUV-yeg6Z5YzPy0LHIMEGc7k
+GEMINI_API_KEY=""
 ```
 
 ### Paso 3: Ejecutar la Aplicación
