@@ -1,3 +1,4 @@
+@"
 # Copia este archivo como '.env' y completa los valores
 
 # Puerto del servidor backend
@@ -11,4 +12,6 @@ DB_PATH=/app/database/tutor.db
 
 # API Key de Google Gemini para generación de preguntas con IA
 # IMPORTANTE: Esta es la clave necesaria para que funcione la IA
-GEMINI_API_KEY=AIzaSyCMa3ayOUdQUV-yeg6Z5YzPy0LHIMEGc7k
+# OBTÉN TU PROPIA API KEY desde: https://makersuite.google.com/app/apikey
+GEMINI_API_KEY=tu_clave_api_de_gemini_aqui
+"@ | Out-File -FilePath .env.example -Encoding UTF8
