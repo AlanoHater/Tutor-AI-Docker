@@ -1,15 +1,14 @@
-// database/initDB.js - VERSIÓN CORREGIDA
-require('dotenv').config(); // ¡AGREGAR ESTA LÍNEA AL INICIO!
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs'); // NECESARIO: Importar bcrypt
 const { openDB } = require('../config/database');
 
 const initDatabase = async () => {
   try {
     console.log('🔧 Inicializando base de datos...');
-    console.log('📁 DB_PATH:', process.env.DB_PATH);
     
-    // Crear la carpeta database si no existe
+    // 1. Crear carpeta si no existe
     const dbDir = path.dirname(process.env.DB_PATH);
     if (!fs.existsSync(dbDir)) {
       fs.mkdirSync(dbDir, { recursive: true });
@@ -18,13 +17,9 @@ const initDatabase = async () => {
 
     const db = await openDB();
     
-    // Leer y ejecutar el schema SQL
+    // 2. Ejecutar Schema
     const schemaPath = path.join(__dirname, 'schema.sqlite.sql');
-    console.log('📄 Schema path:', schemaPath);
-    
     const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
-    
-    // Ejecutar cada sentencia SQL por separado
     const statements = schemaSQL.split(';').filter(stmt => stmt.trim());
     
     for (const statement of statements) {
@@ -33,20 +28,29 @@ const initDatabase = async () => {
       }
     }
 
+    // 3. CORRECCIÓN AUTOMÁTICA DE ADMIN (Lo que faltaba en Docker)
+    console.log('🔑 Asegurando credenciales de admin...');
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    
+    // Actualiza la contraseña del admin insertado por el schema
+    await db.run(
+      "UPDATE usuarios SET contraseña_encriptada = ? WHERE usuario = 'admin'",
+      [hashedPassword]
+    );
+    console.log('✅ Admin actualizado: admin / admin123');
+
     console.log('✅ BASE DE DATOS SQLITE INICIALIZADA CORRECTAMENTE');
     await db.close();
+
   } catch (error) {
-    // Si el error es por datos duplicados, es normal después del primer inicio
-    if (error.code === 'SQLITE_CONSTRAINT' && error.message.includes('UNIQUE constraint failed')) {
-      console.log('ℹ️ La base de datos ya estaba inicializada (datos duplicados ignorados)');
+    if (error.code === 'SQLITE_CONSTRAINT') {
+      console.log('ℹ️ Base de datos ya existente (Warnings ignorados)');
     } else {
-      console.error('❌ ERROR AL INICIALIZAR LA BASE DE DATOS:', error.message);
-      console.error('Stack trace:', error.stack);
+      console.error('❌ ERROR CRÍTICO EN INIT DB:', error);
     }
   }
 };
 
-// Ejecutar la inicialización si este archivo se ejecuta directamente
 if (require.main === module) {
   initDatabase();
 }
