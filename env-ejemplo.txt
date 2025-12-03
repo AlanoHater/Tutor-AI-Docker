@@ -1,0 +1,14 @@
+# Copia este archivo como '.env' y completa los valores
+
+# Puerto del servidor backend
+PORT=5000
+
+# Entorno de ejecución (development/production)
+NODE_ENV=production
+
+# Ruta de la base de datos SQLite
+DB_PATH=/app/database/tutor.db
+
+# API Key de Google Gemini para generación de preguntas con IA
+# IMPORTANTE: Esta es la clave necesaria para que funcione la IA
+GEMINI_API_KEY=AIzaSyCMa3ayOUdQUV-yeg6Z5YzPy0LHIMEGc7k

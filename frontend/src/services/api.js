@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 // Configurar la base URL de tu API
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = '/api';
 
 // Crear instancia de axios CON interceptores funcionales
 const api = axios.create({
