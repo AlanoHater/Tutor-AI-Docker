@@ -1,0 +1,21 @@
+MÉTODOS NUMÉRICOS - INTERPOLACIÓN
+
+La interpolación es una técnica matemática utilizada para estimar valores entre puntos conocidos de una función. Los métodos más comunes son:
+
+1. Interpolación de Lagrange: Utiliza polinomios de Lagrange para interpolar datos. La fórmula general es:
+   P(x) = Σ yi * Li(x)
+   donde Li(x) son los polinomios base de Lagrange.
+
+2. Método de Newton por diferencias divididas: Construye el polinomio interpolante usando diferencias divididas. Es más eficiente para agregar nuevos puntos.
+
+3. Interpolación por splines: Utiliza funciones spline para interpolar, especialmente útil para datos suaves.
+
+VENTAJAS DE LA INTERPOLACIÓN:
+- Permite estimar valores intermedios
+- Es útil para aproximar funciones complejas
+- Los polinomios interpolantes son suaves
+
+DESVENTAJAS:
+- Puede sufrir del fenómeno de Runge
+- Los polinomios de alto grado pueden oscilar
+- No es adecuado para extrapolación
