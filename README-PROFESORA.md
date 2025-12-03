@@ -5,7 +5,26 @@
 - **Docker Desktop** instalado y ejecutándose
 - **Windows/Linux/Mac** con soporte para Docker
 
-## 🚀 Instrucciones para Ejecutar la Aplicación
+## 🚀 **DOS MÉTODOS DE DESPLIEGUE**
+
+### 📦 **Método 1: Source-Based Deployment (RECOMENDADO)**
+**Construye las imágenes desde el código fuente** - Más flexible y siempre actualizado.
+
+[📖 **Ver Instrucciones Completas**](DEPLOYMENT-SOURCE.md)
+
+```bash
+# Clonar y desplegar desde código fuente
+git clone https://github.com/AlanoHater/Tutor-AI-Docker.git
+cd Tutor-AI-Docker
+git checkout docker-setup
+cp env-ejemplo.txt .env
+# Editar .env con tu GEMINI_API_KEY
+docker compose build
+docker compose up
+```
+
+### 🖼️ **Método 2: Pre-built Images (ALTERNATIVO)**
+**Usa imágenes Docker pre-compiladas** - Más rápido pero requiere archivos grandes.
 
 ### Paso 1: Cargar las Imágenes Docker
 

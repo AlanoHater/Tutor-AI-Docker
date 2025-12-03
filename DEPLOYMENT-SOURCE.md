@@ -1,26 +1,45 @@
-# 🚀 Despliegue desde Código Fuente - Tutor Inteligente
+# 🚀 **Source-Based Deployment - Tutor Inteligente**
 
-## 📋 Requisitos Previos
+## 📋 **Método: Construcción desde Código Fuente**
+
+Este método permite desplegar la aplicación construyendo las imágenes Docker directamente desde el código fuente. Es ideal cuando se quiere tener el control total del proceso de construcción y se cuenta con una conexión a internet estable.
+
+---
+
+## 🎯 **Requisitos Previos**
 
 - **Docker Desktop** instalado y ejecutándose
 - **Git** instalado
 - **Conexión a internet** (para descargar dependencias)
 - **Windows/Linux/Mac** con soporte para Docker
 
-## 📥 Paso 1: Descargar el Código Fuente
+---
+
+## 📥 **Paso 1: Clonar el Repositorio**
 
 ```bash
-# Clonar el repositorio desde GitHub
+# Clonar el repositorio
 git clone https://github.com/AlanoHater/Tutor-AI-Docker.git
 cd Tutor-AI-Docker
 
-# Cambiar a la rama con la configuración Docker
+# Cambiar a la rama con Docker
 git checkout docker-setup
 ```
 
-## ⚙️ Paso 2: Configurar Variables de Entorno
+---
 
-Crea un archivo llamado `.env` en la raíz del proyecto:
+## ⚙️ **Paso 2: Configurar Variables de Entorno**
+
+### Opción A: Copiar archivo de ejemplo
+```bash
+# Copiar el archivo de ejemplo
+copy env-ejemplo.txt .env
+# O en Linux/Mac: cp env-ejemplo.txt .env
+```
+
+### Opción B: Crear archivo .env manualmente
+
+Crea un archivo llamado `.env` en la raíz del proyecto con este contenido:
 
 ```bash
 # Puerto del servidor backend
@@ -32,177 +51,162 @@ NODE_ENV=production
 # Base de datos SQLite
 DB_PATH=/app/database/tutor.db
 
-# API Key de Google Gemini (IMPORTANTE: necesaria para IA)
-GEMINI_API_KEY=AIzaSyCMa3ayOUdQUV-yeg6Z5YzPy0LHIMEGc7k
+# API Key de Google Gemini (IMPORTANTE: reemplaza con tu clave real)
+GEMINI_API_KEY=tu_clave_api_de_gemini_aqui
 
-# JWT Secret para tokens de sesión
+# JWT Secret para autenticación
 JWT_SECRET=mi_clave_secreta_para_jwt_tutor_inteligente_2025
 ```
 
-**Nota:** El `GEMINI_API_KEY` es necesario para que funcione la generación automática de preguntas con IA.
+**⚠️ IMPORTANTE:** Debes configurar `GEMINI_API_KEY` con una clave válida de Google Gemini.
 
-## 🐳 Paso 3: Construir y Ejecutar con Docker
+---
 
-### Opción A: Construir y Ejecutar (Recomendado)
-
-```bash
-# Construir las imágenes y ejecutar
-docker compose up --build
-```
-
-### Opción B: Construir Primero, Ejecutar Después
+## 🏗️ **Paso 3: Construir las Imágenes Docker**
 
 ```bash
-# Construir las imágenes
+# Construir las imágenes desde el código fuente
 docker compose build
 
-# Ejecutar en segundo plano
-docker compose up -d
-
-# Ver logs si es necesario
-docker compose logs -f
+# Este proceso descargará todas las dependencias y compilará:
+# - Backend: Node.js + dependencias + código fuente
+# - Frontend: Node.js build + Nginx
 ```
 
-## 🌐 Paso 4: Acceder a la Aplicación
+**⏱️ Tiempo estimado:** 5-10 minutos (depende de la velocidad de internet y PC)
+
+---
+
+## ▶️ **Paso 4: Ejecutar la Aplicación**
+
+```bash
+# Ejecutar los contenedores
+docker compose up
+
+# O ejecutar en segundo plano
+docker compose up -d
+```
+
+---
+
+## 🌐 **Paso 5: Acceder a la Aplicación**
+
+Una vez que los contenedores estén ejecutándose:
 
 - **Aplicación Web:** http://localhost
 - **API Backend:** http://localhost:5000/api
 - **Documentación API:** http://localhost:5000/api-docs
 
-## 🔐 Paso 5: Credenciales de Acceso
+### 📋 **Credenciales de Acceso**
 
-### Usuario Administrador (Coordinador)
 - **Usuario:** `admin`
 - **Contraseña:** `admin123`
-- **Rol:** Coordinador (puede gestionar profesores y asignar materias)
+- **Tipo:** Coordinador
 
-**Nota:** Este usuario se crea automáticamente durante la inicialización de la base de datos.
+---
 
-## 🛑 Para Detener la Aplicación
+## 🛑 **Para Detener la Aplicación**
 
 ```bash
 # Detener contenedores
 docker compose down
 
-# Detener y eliminar volúmenes (datos persistentes)
+# Detener y eliminar volúmenes (borra datos)
 docker compose down -v
 ```
 
-## 📁 Estructura del Proyecto
+---
 
-```
-Tutor-AI-Docker/
-├── backend/                 # Servidor Node.js/Express
-│   ├── Dockerfile          # Configuración Docker backend
-│   ├── package.json        # Dependencias backend
-│   ├── app.js             # Servidor principal
-│   ├── config/            # Configuraciones
-│   ├── controllers/       # Controladores API
-│   ├── routes/           # Definición de rutas
-│   └── database/         # Scripts de BD
-├── frontend/              # Aplicación React
-│   ├── Dockerfile        # Configuración Docker frontend
-│   ├── nginx.conf        # Configuración Nginx
-│   ├── package.json      # Dependencias frontend
-│   ├── src/              # Código fuente React
-│   └── public/           # Archivos estáticos
-├── docker-compose.yml    # Configuración desarrollo
-├── docker-compose-prod.yml # Configuración producción
-├── .gitignore           # Archivos ignorados
-├── .env                # Variables de entorno (crear)
-└── README-PROFESORA.md # Documentación detallada
-```
-
-## 🔧 Tecnologías Utilizadas
-
-- **Backend:** Node.js + Express.js + SQLite
-- **Frontend:** React.js + Tailwind CSS + Nginx
-- **Base de Datos:** SQLite (persistente en volumen Docker)
-- **IA:** Google Gemini API para generación de preguntas
-- **Contenedores:** Docker + Docker Compose
-- **Autenticación:** JWT (JSON Web Tokens)
-
-## 🚨 Solución de Problemas
-
-### Error: "Port already in use"
-```bash
-# Cambiar puertos en docker-compose.yml
-ports:
-  - "8080:80"    # Cambiar 80 por 8080
-  - "5001:5000" # Cambiar 5000 por 5001
-```
-
-### Error: "Permission denied" en Linux/Mac
-```bash
-# Dar permisos de ejecución
-chmod +x backend/app.js
-```
-
-### Error de conexión a Gemini API
-- Verificar que `GEMINI_API_KEY` esté configurada correctamente
-- Revisar conexión a internet
-
-### Base de datos no se inicializa
-```bash
-# Ver logs del backend
-docker compose logs backend
-
-# Reiniciar con limpieza
-docker compose down -v
-docker compose up --build
-```
-
-## 📊 Verificación del Despliegue
+## 🔍 **Verificación del Despliegue**
 
 ### Ver estado de contenedores:
 ```bash
 docker compose ps
 ```
 
-### Ver logs en tiempo real:
+### Ver logs:
 ```bash
-docker compose logs -f
-```
+# Logs de todos los servicios
+docker compose logs
 
-### Ver logs de un servicio específico:
-```bash
+# Logs del backend
 docker compose logs backend
+
+# Logs del frontend
 docker compose logs frontend
 ```
 
-## 🎯 Funcionalidades Disponibles
-
-### Para Profesores:
-- ✅ Subir material educativo (PDF, PPT)
-- ✅ Generar quizzes automáticamente con IA
-- ✅ Gestionar quizzes creados
-- ✅ Ver métricas de uso
-
-### Para Coordinadores:
-- ✅ Gestionar profesores
-- ✅ Asignar materias a profesores
-- ✅ Supervisar actividades
-- ✅ Ver estadísticas generales
-
-### Para Alumnos:
-- ✅ Acceder a quizzes interactivos
-- ✅ Responder preguntas en tiempo real
-- ✅ Ver resultados
+### Ver imágenes construidas:
+```bash
+docker images | findstr tutor-inteligente
+```
 
 ---
 
-## 📞 Soporte
+## 🐛 **Solución de Problemas**
 
-Si encuentras problemas durante el despliegue:
+### Problema: "docker compose build" falla
+**Solución:** Asegúrate de tener buena conexión a internet y suficiente espacio en disco.
 
-1. Verifica que Docker Desktop esté ejecutándose
-2. Revisa que todas las variables de `.env` estén configuradas
-3. Consulta los logs con `docker compose logs`
-4. Asegúrate de tener conexión a internet para descargar dependencias
+### Problema: No puede acceder a http://localhost
+**Solución:**
+```bash
+# Verificar que los contenedores estén ejecutándose
+docker compose ps
 
-**¡La aplicación debería estar funcionando completamente después de seguir estos pasos!**
+# Reiniciar si es necesario
+docker compose restart
+```
+
+### Problema: Error de autenticación
+**Solución:** Verifica que el archivo `.env` tenga las variables correctas, especialmente `JWT_SECRET` y `GEMINI_API_KEY`.
+
+### Problema: Base de datos no funciona
+**Solución:**
+```bash
+# Reiniciar con volúmenes limpios
+docker compose down -v
+docker compose up --build
+```
 
 ---
 
-*Desarrollado para la presentación del proyecto Tutor Inteligente*
-*Configuración Docker optimizada para despliegue desde código fuente*
+## 📁 **Archivos Importantes**
+
+- `docker-compose.yml` - Configuración principal
+- `backend/Dockerfile` - Cómo construir la imagen del backend
+- `frontend/Dockerfile` - Cómo construir la imagen del frontend
+- `frontend/nginx.conf` - Configuración del servidor web
+- `.env` - Variables de entorno (crear este archivo)
+
+---
+
+## ⚡ **Comandos Útiles**
+
+```bash
+# Reconstruir después de cambios
+docker compose up --build --force-recreate
+
+# Ver uso de recursos
+docker stats
+
+# Limpiar imágenes no utilizadas
+docker image prune -f
+
+# Ver logs en tiempo real
+docker compose logs -f
+```
+
+---
+
+## 🎯 **Ventajas de Source-Based Deployment**
+
+- ✅ **Siempre actualizado** - Construye desde el código más reciente
+- ✅ **Personalizable** - Puedes modificar el código antes de construir
+- ✅ **Transparente** - Ves exactamente qué se incluye en las imágenes
+- ✅ **Sin archivos grandes** - No necesitas transferir imágenes .tar
+- ✅ **Control total** - Puedes modificar Dockerfiles y configuración
+
+---
+
+**¡Listo para desplegar!** Si tienes problemas, revisa los logs y verifica tu configuración de Docker. 🚀
