@@ -137,5 +137,5 @@ Si tienes algún problema para ejecutar la aplicación, verifica que:
 
 ---
 
-**Desarrollado por**: [Jose Jesus Enciso Mayo, Alan Isay Cabrera Hernandez, Enrique Albarran]
+**Desarrollado por**: [Jose Jesus Enciso Mayo, Alan Isay Cabrera Hernandez, Enrique Albarran, Uriel Mendoza]
 **Proyecto**: Tutor Inteligente - Sistema de Gestión Educativa
