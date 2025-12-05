@@ -98,11 +98,6 @@ Esta versión incluye las siguientes correcciones y mejoras:
 - ✅ Métricas y estadísticas
 - ✅ Supervisión de actividades
 
-### Para Alumnos:
-- ✅ Acceso a quizzes interactivos
-- ✅ Respuestas en tiempo real
-- ✅ Visualización de resultados
-
 ## 🛑 Para Detener la Aplicación
 
 ```bash
